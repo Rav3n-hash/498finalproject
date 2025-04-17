@@ -1,92 +1,91 @@
-// "use server";
+"use server";
+//these methods may not be correct for now!!!! just started with the template and need to test all user routes
+import pool from "./PoolConnection.js";
 
-// import pool from "./PoolConnection.js";
+//get all users method
+async function GetUsers() {
+  var result;
+  try {
+    result = await pool.query("SELECT * from users");
 
-// //get books method
-// async function GetBooks() {
-//   var result;
-//   try {
-//     result = await pool.query("SELECT * from books");
+  } catch (error) {
+    console.error("Query error:", error);
+  }
+  let list = [];
+  result.rows.map((tmp, index) => {
+    var user = { "userid": tmp.userid, "firstname": tmp.firstname, "lastname": tmp.lastname, "email": tmp.email, "pic": tmp.pic, "companyname": tmp.companyname };
+    list.push(user);
+  })
+  console.log(list);
+  return list;
+};
 
-//   } catch (error) {
-//     console.error("Query error:", error);
-//   }
-//   let list = [];
-//   result.rows.map((tmp, index) => {
-//     var book = { "id": tmp.id, "title": tmp.title, "author": tmp.author, "price": tmp.price, "category_id": tmp.category_id };
-//     list.push(book);
-//   })
-//   console.log(list);
-//   return list;
-// };
+// //delete user method
 
-// //delete book method
+async function DeleteUser(userid) {
+  var result;
+  var qry = "Delete from users where userid=" + userid;
+  result = await pool.query(qry);
 
-// async function DeleteBook(id, setBooks, setLength) {
-//   var result;
-//   var qry = "Delete from books where id=" + id;
-//   result = await pool.query(qry);
+}
 
-// }
+// //update user method
+async function UpdateUser(user) {
+  var result;
 
-// //update book method
-// async function UpdateBook(book) {
-//   var result;
+  try {
+    var firstname = user.firstname;
+    var lastname = user.lastname;
+    var email = user.email;
+    var pic = user.pic;
+    var companyname = user.companyname
+    var qry = "Update users set firstname='" + firstname + "', lastname='" + lastname + "', email='" + email + "', pic ='" + pic + "' , companyname='" +companyname +"' where userid=" + userid;
 
-//   try {
-//     // var book=req.body;
-//     var title = book.title;
-//     var author = book.author;
-//     var price = book.price;
-//     var catid = book.category_id;
-//     var id = book.id
-//     var qry = "Update books set Author='" + author + "', title='" + title + "',price=" + price + ",category_id=" + catid + "where id=" + id;
+    console.log(qry);
+    result = await pool.query(qry);
+    console.log(result);
 
-//     console.log(qry);
-//     result = await pool.query(qry);
-//     console.log(result);
+  } catch (error) {
+    console.error("Query error:", error);
+  }
+};
 
-//   } catch (error) {
-//     console.error("Query error:", error);
-//   }
-// };
+// //add user method
+async function AddUser(user) {
+  try {
+    var firstname = user.firstname;
+    var lastname = user.lastname;
+    var email = user.email;
+    var password = user.password;
+    var pic = user.pic;
+    var companyname = user.companyname
 
-// //add book method
-// async function BookAdd(book) {
-//   try {
-//     var title = book.title;
-//     var author = book.author;
-//     var price = book.price;
-//     var catid = book.category_id;
+    var qry = "Insert into users (firstname, lastname, email, password, pic, companyname) VALUES ("
+      + "'" + firstname + "'," + "'" + lastname + "'," + "'" + email + "'," + "'" + password + "'," + "'" + pic + "'," + "'" + companyname + "')";
 
-//     var qry = "Insert into books (title, author, price, category_id) VALUES ("
-//       + "'" + title + "'," + "'" + author + "'," + price + "," + catid + ")";
+    console.log(qry);
+    const result = await pool.query(qry);
+    console.log(result);
 
-//     console.log(qry);
-//     const result = await pool.query(qry);
-//     console.log(result);
+  } catch (error) {
+    console.error("Query error:", error);
+  }
+};
 
-//   } catch (error) {
-//     console.error("Query error:", error);
-//   }
-// };
+//get user by id
+async function GetUser(userid) {
+    try {
+      var id1=user.userid;
+      const result = await pool.query("select * from users where userid="+id1);
+      console.log(result);
 
-// // bookRouter.get("/getbook", async (req, res) => {
-// //     try {
-// //       var id1=req.query.id;
-// //       console.log(id1);
-// //       const result = await pool.query("select * from books where id="+id1);
-// //       console.log(result);
-// //       res.json({rows:result.rows});
-
-// //     } catch (error) {
-// //       console.error("Query error:", error);
-// //       res.status(500).json({ error: "Database query failed" });     
-// //     }
-// //   });
-
+    } catch (error) {
+      console.error("Query error:", error);
+    }
+  };
 
 
 
 
-// export { GetBooks, DeleteBook, UpdateBook, BookAdd };
+
+export { GetUsers, DeleteUser, UpdateUser, AddUser, GetUser };
