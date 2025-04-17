@@ -78,7 +78,7 @@ export default function LeftNavbar() {
       {showCategoryMenu && (
         <div className="ml-10 text-black/40">
           {categories.map((category, index) => (
-            <Link href={`/browse/${category.name.trim().toLowerCase()}`}>
+            <Link href={`/Browse/${category.name.trim().toLowerCase()}`}>
               <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
                 <FontAwesomeIcon icon={category.icon} className="text-sm mr-2" />
                 {category.name}
