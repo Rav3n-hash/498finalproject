@@ -1,5 +1,4 @@
 "use server";
-
 import pool from "./PoolConnection.js";
 
 export async function GetItems() {
