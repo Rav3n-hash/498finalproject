@@ -12,9 +12,10 @@ export default function LeftNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // if(sessionStorage.getItem("loggedIn"==1)){isLoggedIn=true}
+
   const handleLogout = () => {
     setIsLoggedIn(false);
-    // Remove auth token from storage or call logout API
     console.log("User logged out");
   };
 
@@ -88,6 +89,12 @@ export default function LeftNavbar() {
         </div>
       )}
 
+  <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
+      <Link href="/Profile">
+        <FontAwesomeIcon icon={faUser} className='mr-2' /> Immediate View Profile for testing
+        </Link>
+      </div>
+
       <button
         onClick={toggleProfileOptions}
         className="text-left ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 transition duration-400 cursor-pointer"
@@ -98,32 +105,38 @@ export default function LeftNavbar() {
       {/* Options */}
       {showProfileMenu && (
         <div className="ml-10 text-black/40">
-          {!isLoggedIn ? (
-            profileOptions.map((option, index) => (
-              <div
-                key={index}
-                className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer"
-              >
-                <FontAwesomeIcon icon={option.icon} className="text-sm" />
-                {option.name}
-              </div>
-            ))
+          {isLoggedIn ? (
+            profileOptions.map((option, index) => {
+              const pathMap = {
+                " View Profile": "/Profile",
+                " View Orders": "/Profile/orders",
+                " View Cart": "/Profile/cart",
+                " Logout": "/Logout"
+              };
+              return (
+                <Link key={index} href={pathMap[option.name]}>
+                  <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
+                    <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
+                    {option.name}
+                  </div>
+                </Link>
+              );
+            })
           ) : (
             profileLogin.map((option, index) => (
-              <div
-                key={index}
-                className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer"
-              >
-                <FontAwesomeIcon icon={option.icon} className="text-sm" />
-                {option.name}
-              </div>
+              <Link key={index} href="/Login">
+                <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
+                  <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
+                  {option.name}
+                </div>
+              </Link>
             ))
           )}
         </div>
       )}
 
       <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
-      <Link href="/postitem">
+      <Link href="/PostItem">
         <FontAwesomeIcon icon={faPlusCircle} className='mr-2' /> Post Item
         </Link>
       </div>
