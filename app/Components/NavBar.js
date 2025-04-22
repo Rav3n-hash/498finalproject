@@ -8,21 +8,9 @@ import MiniLoginPanel from './LoginPanel';
 
 
 export default function LeftNavbar() {
-
-  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-  const categories = [
-    { name: " Bath & Body", icon: faSoap },
-    { name: " Kitchen", icon: faUtensils },
-    { name: " Jewelery", icon: faGem },
-    { name: " Food", icon: faAppleAlt },
-    { name: " Decor", icon: faCouch },
-    { name: " Clothing", icon: faShirt },
-    { name: " View All", icon: faThList }
-  ];
 
   const toggleCategories = () => {
     setShowCategoryMenu(!showCategoryMenu);
@@ -63,28 +51,13 @@ export default function LeftNavbar() {
         </Link>
       </div>
 
-{/**CATEGORY "DROPDOWN" */}
-      <button
-        onClick={toggleCategories}
-        className="text-left ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 transition duration-400 cursor-pointer">
-        <FontAwesomeIcon icon={faBagShopping} className="mr-2" /> 
-        <Link href="/Browse">Browse
-        </Link>
-      </button>
+{/**CATEGORIES*/}
 
-      {/* Categories */}
-      {showCategoryMenu && (
-        <div className="ml-10 text-black/40">
-          {categories.map((category, index) => (
-            <Link href={`/Browse/${category.name.trim().toLowerCase()}`}>
-              <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
-                <FontAwesomeIcon icon={category.icon} className="text-sm mr-2" />
-                {category.name}
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+<div className="ml-4 text-lg p-3 mb-2  hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
+      <FontAwesomeIcon icon={faBagShopping} className='mr-2' />
+        <Link href="/">Browse
+        </Link>
+      </div>
 
 {/**PROFILE "DROPDOWN" */}
       <button

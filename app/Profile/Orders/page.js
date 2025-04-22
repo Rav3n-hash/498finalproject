@@ -1,114 +1,95 @@
 'use client';
 
+
+
+//If the user is an admin, they should be able to see all items in the system. Otherwise, they should only see orders that contain relevant items 
+    //ex.) If I sell item15, I should only see orders containing item15 
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import mockOrders from "../../Service/orders";
 
-import orders from "../../Service/orders";
-import users from "../../Service/users";
+export default function ViewOrders() {
+  const [orderList, setOrderList] = useState([]);
+  const router = useRouter();
 
-
-
-export default function YourOrder() {
-  const [order, setOrder] = useState([1]);
-  const [loading, setLoading] = useState(true);
-
-
+  // Simulate fetching orders
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await fetch(orders);
-        const data = await res.json();
-        const userId = sessionStorage.getItem("userId");
-        // You can filter orders by userId if needed
-        const userOrder = data.find((o) => o.userId === parseInt(userId));
-        if (userOrder) {
-          setOrder(userOrder.items);
-        } else {
-          setOrder([]);
-        }
-      } catch (err) {
-        console.error("Failed to load orders:", err);
-      } finally {
-        setLoading(false);
-      }
+    const simulateOrders = () => {
+      console.log("Fetched Orders: ", JSON.stringify(mockOrders, null, 2));
+      setOrderList(mockOrders); // Use the entire list of items
     };
 
-    fetchOrders();
+    simulateOrders();
   }, []);
 
-  const clearOrder = () => {
-    setOrder([]);
-  };
-
-  const removeItem = (indexToRemove) => {
-    const updatedOrder = order.filter((_, index) => index !== indexToRemove);
-    setOrder(updatedOrder);
-  };
-
-  const total = order?.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
-
-  const placeOrder = async () => {
-    if (order.length > 3) {
-      alert("You can only order up to 3 items at a time.");
-      return;
+  // Delete an order (just alert)
+  function handleDeleteOrder(id) {
+    const confirmDelete = window.confirm(`Are you sure you want to delete order #${id}?`);
+    if (confirmDelete) {
+      alert(`Deleting Order #${id}`);
+      setOrderList(prev => prev.filter(o => o.orderid !== id));
     }
-
-    // Fake success for now
-    alert("Order placed!");
-    clearOrder();
-  };
-
-
-  if (loading) {
-    return <div className="p-6 text-gray-500">Loading order...</div>;
   }
 
   return (
-    <div className="flex flex-col justify-center items-center p-4">
-      <h1 className="text-2xl text-pink-500 w-1/2">Your Order</h1>
-      <br />
-      {order.length === 0 ? (
-        <p className="text-pink-500">You have not added any items to your order.</p>
+    <div className="ml-105 p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">All Orders</h1>
+
+      {orderList.length === 0 ? (
+        <p className="text-center text-[#a8b2a1]">No orders found.</p>
       ) : (
-        <div className="flex mt-5 justify-center items-center">
-          <ul className="text-left bg-pink-100 p-4 rounded shadow-md w-80">
-            {order.map((item, index) => (
-              <li
-                key={index}
-                className="mb-2 border-b border-pink-300 pb-1 flex justify-between items-center"
-              >
-                <span>{item.name}</span>
+        <div className="space-y-6">
+          {orderList.map((order, index) => (
+            <div
+              key={order.orderid}
+              className="bg-[#f8e7e7cb] border border-[#a8b2a1] rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow text-[#2e2e2e8c]"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-[#2e2e2e]">Order #{order.id}</h2>
+                <span className="text-sm text-[#a8b2a1]">
+                  {order.orderDate}
+                </span>
+              </div>
+
+              <p className="text-sm mb-2">
+                <strong>User ID:</strong> {order.userId}
+              </p>
+
+              <p className="text-sm mb-2">
+                <strong>Items:</strong>{" "}
+                {[order.items[0].name, order.items[1].name,order.items[2].name ]
+                  .filter(Boolean)
+                  .join(", ")}
+              </p>
+
+              <p className="text-sm mb-4">
+                <strong>Total:</strong> ${order.totalPrice.toFixed(2)}
+              </p>
+
+              <div className="flex gap-3">
                 <button
-                  className="text-xs bg-red-300 hover:bg-red-400 text-white px-2 py-1 rounded"
-                  onClick={() => removeItem(index)}
-                  title="Remove Item"
+                  onClick={() => alert("Order confirmed")}
+                  className="bg-[#7c7f65] hover:bg-[#a8b2a1] text-white px-4 py-2 rounded-lg text-sm"
                 >
-                  X
+                  Confirm
                 </button>
-              </li>
-            ))}
-          </ul>
+                <button
+                  onClick={() => alert("Order denied")}
+                  className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm"
+                >
+                  Deny
+                </button>
+                <button
+                  onClick={() => handleDeleteOrder(order.orderid)}
+                  className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded-lg text-sm ml-auto"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
-
-      <p className="mt-4 text-lg font-semibold text-pink-600">
-        Order Total: ${total}
-      </p>
-
-      {order.length > 0 && (
-        <>
-          <button
-            onClick={clearOrder}
-            className="text-xs mt-4 p-2 bg-red-300 hover:bg-red-400 text-white rounded"
-          >
-            Clear Order
-          </button>
-          <button
-            onClick={placeOrder}
-            className="text-xs mt-4 p-2 bg-green-300 hover:bg-green-400 text-white rounded ml-2"
-          >
-            Place Order
-          </button>
-        </>
       )}
     </div>
   );

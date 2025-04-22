@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import orders from "../../Service/orders";
 import items from "../../Service/items";
 import users from "../../Service/users";
+import { AddOrder } from "@/app/Service/OrderRoutes";
 
 
 
@@ -15,6 +16,7 @@ export default function ViewCart() {
 //TESTING: Fill the cart with all items
   useEffect(() => {
     const simulateAllItemsInCart = () => {
+      console.log(items)
       setOrder(items); // Use the entire list of items
       setLoading(false);
     };
@@ -63,10 +65,32 @@ export default function ViewCart() {
       alert("You can only order up to 3 items at a time.");
       return;
     }
-
-    // Fake success for now
-    alert("Order placed!");
-    clearOrder();
+  
+    const userId = sessionStorage.getItem("userId");
+    const total = order.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+  
+    const payload = {
+      userid: parseInt(userId),
+      item1: order[0]?.id || null, //getid of each item in order 
+      item2: order[1]?.id || null,
+      item3: order[2]?.id || null,
+      price: total,
+      orderdate: new Date().toISOString(),
+    };
+  
+    try {
+      const res = await AddOrder()
+  
+      if (res.ok) {
+        alert("Order placed!");
+        clearOrder();
+      } else {
+        alert("Failed to place order.");
+      }
+    } catch (err) {
+      console.error("Error placing order:", err);
+      alert("Something went wrong!");
+    }
   };
 
   if (loading) {
