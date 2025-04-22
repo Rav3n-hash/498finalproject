@@ -76,11 +76,10 @@ export default function ViewCart() {
   return (
     <div className="ml-20">
       <div className="ml-80 mt-2">
-        <h1 className="text-3xl font-bold text-[#2e2e2e] mb-4">Your Cart</h1>
-        <p className="text-[#7c7f65] ml-75 text-2xl font-semibold">Items currently in the cart :</p>
+        <h1 className="text-3xl font-bold text-[#2e2e2e] mb-3">Your Cart</h1>
       </div>
 
-      <div className="flex flex-col justify-center items-center p-4 ml-30">
+      <div className="flex flex-col justify-center items-center ml-30">
         <br />
         {order.length === 0 ? (
           <p className="text-[#7c7f65]">You have not added any items to your order.</p>
