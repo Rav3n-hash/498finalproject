@@ -48,16 +48,17 @@ export default function MiniLoginPanel() {
           <img
             src={loggedInUser.picture || "https://via.placeholder.com/40"}
             alt="Profile"
-            className="w-10 h-10 rounded-full object-cover border border-[#a8b2a1]"
+            className="w-10 h-10 rounded-sm object-cover border border-[#889183]"
           />
           <div>
             <p className="font-semibold">Hello,</p>
             <p className="text-[#7c7f65]">{loggedInUser.username}</p>
           </div>
         </div>
+
         <button
           onClick={handleLogout}
-          className="w-full bg-[#a8b2a1] hover:bg-[#7c7f65] text-white py-2 rounded-md flex items-center justify-center gap-2"
+          className="w-1/2 bg-red-400 hover:bg-red-300 text-white py-2 rounded-md flex justify-center items-center gap-2"
         >
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
           Logout
