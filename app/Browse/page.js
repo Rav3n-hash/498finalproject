@@ -1,6 +1,5 @@
 "use client"
 
-
 import { useState } from "react";
 import items from "../Service/items";
 import ItemCard from "../Components/ItemCard";
@@ -10,7 +9,7 @@ export default function Browse() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   // Extract unique categories from the items
-  const categories = ["All", ...new Set(items.map(item => item.category))];
+  const categories = ["All", ...new Set(items.map(item => item.category))]; //shouldn't have to replac for db
 
   // Filter items based on the selected category
   const filteredItems = selectedCategory === "All"
