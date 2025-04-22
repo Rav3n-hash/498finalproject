@@ -85,7 +85,30 @@ async function GetUser(userid) {
   };
 
 
+//login user
+async function LoginUser(email, password) {
+    try {
+      var qry = `
+        SELECT * FROM users 
+        WHERE email = $1 AND password = $2
+      `;
+      const values = [email, password];
+  
+      const result = await pool.query(qry, values);
+  
+      if (result.rows.length === 0) {
+        console.log("No user found");
+        return null;
+      }
+  
+      const user = result.rows[0];
+      return user;
+  
+    } catch (error) {
+      console.error("Login error:", error.message);
+      throw error;
+    }
+  }
 
 
-
-export { GetUsers, DeleteUser, UpdateUser, AddUser, GetUser };
+export { GetUsers, DeleteUser, UpdateUser, AddUser, GetUser, LoginUser };
