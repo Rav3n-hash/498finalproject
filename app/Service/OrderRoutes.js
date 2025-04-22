@@ -21,7 +21,7 @@ async function GetOrders() {
     }
   }
 
-  async function AddOrder(order, userId) { //add new order and link it to logged in user
+  async function AddOrder(order, userId) { 
     try {
       const { item1, item2, item3, price, orderdate } = order;
   

@@ -1,101 +1,28 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import orders from "../../Service/orders";
 import items from "../../Service/items";
 import users from "../../Service/users";
 import { AddOrder } from "@/app/Service/OrderRoutes";
+import { MyContext } from "@/app/Components/MyContext";
 
 
 
 export default function ViewCart() {
-  const [order, setOrder] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {clearCart, removeItem, placeOrder}= useContext(MyContext);
+  const [currentCart, setCurrentCart]=useState([]);
 
 //TESTING: Fill the cart with all items
   useEffect(() => {
-    const simulateAllItemsInCart = () => {
-      console.log(items)
-      setOrder(items); // Use the entire list of items
-      setLoading(false);
-    };
-
-    simulateAllItemsInCart();
+    const curCart = sessionStorage.getItem("cart");
+    if(curCart){
+      setCurrentCart(JSON.parse(curCart));
+    }
   }, []);
 
-
-//For actual fetching
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     try {
-  //       const res = await fetch(orders);
-  //       const data = await res.json();
-  //       const userId = sessionStorage.getItem("userId");
-  //       // You can filter orders by userId if needed
-  //       const userOrder = data.find((o) => o.userId === parseInt(userId));
-  //       if (userOrder) {
-  //         setOrder(userOrder.items);
-  //       } else {
-  //         setOrder([]);
-  //       }
-  //     } catch (err) {
-  //       console.error("Failed to load orders:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchOrders();
-  // }, []);
-
-  const clearOrder = () => {
-    setOrder([]);
-  };
-
-  const removeItem = (indexToRemove) => {
-    const updatedOrder = order.filter((_, index) => index !== indexToRemove);
-    setOrder(updatedOrder);
-  };
-
-  const total = order?.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
-
-  const placeOrder = async () => {
-    if (order.length > 3) {
-      alert("You can only order up to 3 items at a time.");
-      return;
-    }
-  
-    const userId = sessionStorage.getItem("userId");
-    const total = order.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
-  
-    const payload = {
-      userid: parseInt(userId),
-      item1: order[0]?.id || null, //getid of each item in order 
-      item2: order[1]?.id || null,
-      item3: order[2]?.id || null,
-      price: total,
-      orderdate: new Date().toISOString(),
-    };
-  
-    try {
-      const res = await AddOrder()
-  
-      if (res.ok) {
-        alert("Order placed!");
-        clearOrder();
-      } else {
-        alert("Failed to place order.");
-      }
-    } catch (err) {
-      console.error("Error placing order:", err);
-      alert("Something went wrong!");
-    }
-  };
-
-  if (loading) {
-    return <div className="p-6 text-gray-500">Loading order...</div>;
-  }
+  const total = currentCart.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
 
   return (
     <div className="ml-20">
@@ -105,11 +32,11 @@ export default function ViewCart() {
 
       <div className="flex flex-col justify-center items-center ml-30">
         <br />
-        {order.length === 0 ? (
+        {currentCart.length === 0 ? (
           <p className="text-[#7c7f65]">You have not added any items to your order.</p>
         ) : (
           <div className="flex flex-wrap justify-left gap-6 shadow-lg bg-[#eed7e1] border-black/50 border-2 rounded-sm w-175">
-                {order.map((item, index) => (
+                {currentCart.map((item, index) => (
                   <div key={index} className="flex items-center gap-2 p-2 w-80 ml-2">
                     <img
                       src={item.image}
@@ -138,10 +65,10 @@ export default function ViewCart() {
       </p>
 
     <div className="ml-3 flex flex-row gap-2">
-      {order.length > 0 && (
+      {currentCart.length > 0 && (
         <>
           <button
-            onClick={clearOrder}
+            onClick={clearCart}
             className="text-xs mt-4 p-2 bg-[#d44343] hover:bg-red-400 text-white rounded"
           >
             Clear Order
