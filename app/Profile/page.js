@@ -1,23 +1,31 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import allUsers from '../Service/users'; // mock user data
-import allItems from '../Service/items'; // all item data
+import { useState, useContext, useEffect } from 'react';
+import { MyContext } from '../Components/MyContext';
 
 export default function UserProfile() {
-  const user = allUsers[0]; // Mocked logged-in user
+  const {
+    getUserItems,
+    fName,
+    lName,
+    pic,
+    companyname,
+    userItems
+  } = useContext(MyContext);
 
-  const [items, setItems] = useState(
-    allItems.filter(item => item.seller === user.username)
-  );
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getUserItems(setError);
+  }, []);
 
   const handleEdit = (id) => {
-    alert(`Edit item with ID ${id} (add route)`);
+    alert(`Edit item with ID ${id}`);
   };
 
   const handleDelete = (id) => {
     if (confirm('Are you sure you want to delete this item?')) {
-      setItems(prev => prev.filter(item => item.id !== id));
+      // optionally remove from context or trigger a refresh
     }
   };
 
@@ -26,26 +34,31 @@ export default function UserProfile() {
       {/* Store Header */}
       <div className="flex items-center gap-6 mb-10">
         <img
-          src={user.storepic}
-          alt="Store"
+          src={pic || "https://via.placeholder.com/100"}
+          alt="Profile"
           className="w-40 h-40 object-cover rounded-sm border-4 border-[#7c7f65]"
         />
         <div>
-          <h1 className="text-4xl font-bold text-[#2e2e2e]">{user.username}</h1>
-          <p className="text-[#7c7f65] mt-2">{user.storedesc}</p>
+          <h1 className="text-4xl font-bold text-[#2e2e2e]">{`${fName} ${lName}`}</h1>
+          <p className="text-[#7c7f65] mt-2">{companyname}</p>
         </div>
       </div>
 
       {/* Items List */}
-      <h2 className="text-2xl font-semibold text-[#2e2e2e] mb-4">My Items</h2>
-      <div className="grid grid-cols-2 gap-6">
-        {items.map(item => (
-          <div key={item.id} className="bg-white border border-[#cfc7d2] rounded-lg shadow p-4 flex flex-col">
-            <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded" />
-            <h3 className="text-xl font-semibold mt-3 text-[#2e2e2e]">{item.name}</h3>
-            <p className="text-sm text-[#7c7f65]">{item.description}</p>
-            <p className="mt-1"><span className="font-medium">Price:</span> ${item.price.toFixed(2)}</p>
-            <p><span className="font-medium">Stock:</span> {item.stock}</p>
+      <h2 className="text-2xl font-bold mb-4">My Items</h2>
+      {error && <p className="text-red-500">{error}</p>}
+      <div className="grid grid-cols-2 gap-4">
+        {userItems.map((item) => (
+          <div key={item.id} className="border p-4 rounded shadow">
+            <img
+              src={item.image || "https://via.placeholder.com/300"}
+              alt={item.title}
+              className="w-full h-40 object-cover mb-2"
+            />
+            <h3 className="text-lg font-semibold">{item.title}</h3>
+            <p>{item.description}</p>
+            <p className="font-medium text-green-700">${item.price.toFixed(2)}</p>
+            <p className="text-sm text-gray-600">{item.category}</p>
 
             <div className="mt-auto flex gap-2 pt-4">
               <button

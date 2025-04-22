@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import orders from ".../Service/orders";
+import orders from "../../Service/orders";
 
 
 export default function YourOrder() {
