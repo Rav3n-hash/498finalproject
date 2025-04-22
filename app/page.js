@@ -6,6 +6,7 @@ import { GetItems } from "./Service/ItemRoutes";
 
 export default async function Home() {
   const items = await GetItems();
+  
   return (
     <div className="ml-60 p-8">
       <h2 className="text-3xl font-bold mb-6 text-[#2e2e2e]">Featured Items</h2>

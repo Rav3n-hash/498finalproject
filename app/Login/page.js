@@ -1,25 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import users from "../Service/users";
+import { LoginUser } from "../Service/UserRoutes";
+import { MyContext } from "../Components/MyContext";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const { isLoggedIn, updateLoggedIn } = useContext(MyContext);
 
-  const handleLogin = () => {
-    const user = users.find(u => u.username === username && u.password === password);
-    if (user) {
-    //   sessionStorage.setItem("loggedIn", 1);
-    //   sessionStorage.setItem("loggedInUser", JSON.stringify(user));
-      router.push("/"); // redirect to homepage or profile
-    } else {
-      setError("Invalid username or password");
+  async function handleLogin() {
+    try {
+      const user = await LoginUser(email, password);
+
+      if (user) {
+        updateLoggedIn(true);
+        sessionStorage.setItem("userid", user.userid);
+        sessionStorage.setItem("fName", user.firstname);
+        sessionStorage.setItem("lName", user.lastname);
+        sessionStorage.setItem("email", user.email);
+        sessionStorage.setItem("pic", user.pic || "");
+        sessionStorage.setItem("companyname", user.companyname || "");
+        sessionStorage.setItem("logged", "1");
+        
+        router.push("/"); 
+      }
+    } catch (err) {
+      setError("Invalid email or password.");
     }
-  };
+  }
 
 
   return (
@@ -30,9 +43,9 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4">
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="p-3 border border-[#cfc7d2] rounded-md focus:outline-none focus:ring-2 focus:ring-[#a8b2a1]"
           />
 
