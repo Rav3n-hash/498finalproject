@@ -38,20 +38,30 @@ async function GetOrders() {
     }
   }
 
-  async function GetOrdersForSeller(sellerId) { //this should be used to display relevant orders a seller needs to fulfill
+  async function GetOrdersForSeller(userId) {
     try {
-      const qry = `
-        SELECT * FROM orders
-        WHERE item1 IN (SELECT itemid FROM items WHERE userid = $1)
-           OR item2 IN (SELECT itemid FROM items WHERE userid = $1)
-           OR item3 IN (SELECT itemid FROM items WHERE userid = $1)
-      `;
-      const result = await pool.query(qry, [sellerId]);
+      const result = await pool.query(
+        `SELECT 
+        o.orderid, o.userid, o.price, o.orderdate,
+
+        i1.itemid AS item1_id, i1.title AS item1_title, i1.description AS item1_description, i1.image AS item1_image, i1.quantityAvailable AS item1_stock,
+        i2.itemid AS item2_id, i2.title AS item2_title, i2.description AS item2_description, i2.image AS item2_image, i2.quantityAvailable AS item2_stock,
+        i3.itemid AS item3_id, i3.title AS item3_title, i3.description AS item3_description, i3.image AS item3_image, i3.quantityAvailable AS item3_stock
+
+      FROM orders o
+      LEFT JOIN items i1 ON o.item1 = i1.itemid
+      LEFT JOIN items i2 ON o.item2 = i2.itemid
+      LEFT JOIN items i3 ON o.item3 = i3.itemid
+      WHERE o.userid = $1`,
+        [userId]
+      );
       return result.rows;
     } catch (error) {
-      console.error("Error fetching seller's orders:", error);
-      throw error;
+      console.error("Error fetching orders by user ID:", error);
+      return [];
     }
   }
+  
+  
 
 export {GetOrders, DeleteOrder, AddOrder, GetOrdersForSeller}

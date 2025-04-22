@@ -62,4 +62,43 @@ JOIN categories c ON i.catID = c.catID
       return [];
     }
   }
-  export {GetItems, GetItemsByUserId}
+
+// update item by ID
+async function UpdateItem(item) {
+    try {
+      const { id, title, description, price, stock, image } = item;
+  
+      const qry = `
+        UPDATE items 
+        SET 
+          title = $1,
+          description = $2,
+          price = $3,
+          quantityAvailable = $4,
+          image = $5
+        WHERE itemid = $6
+      `;
+  
+      const values = [title, description, price, stock, image, id];
+  
+      const result = await pool.query(qry, values);
+      console.log("Update result:", result.rowCount);
+    } catch (error) {
+      console.error("UpdateItem error:", error);
+    }
+  }
+  
+//delete item method
+
+async function DeleteItem(id) {
+    try {
+      const qry = "DELETE FROM items WHERE itemid = $1";
+      const result = await pool.query(qry, [id]);
+      console.log("Deleted item with ID:", id);
+      return result;
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  }
+  
+  export {GetItems, GetItemsByUserId, UpdateItem, DeleteItem}

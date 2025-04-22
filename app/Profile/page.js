@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useContext, useEffect } from 'react';
-import { MyContext } from '../Components/MyContext';
+import { useState, useEffect, useContext } from "react";
+import { MyContext } from "../Components/MyContext";
+import EditItemModal from "../Components/EditItemModal";
 
 export default function UserProfile() {
   const {
@@ -10,7 +11,9 @@ export default function UserProfile() {
     lName,
     pic,
     companyname,
-    userItems
+    userItems,
+    handleEditItem,
+    deleteItem,
   } = useContext(MyContext);
 
   const [error, setError] = useState("");
@@ -19,15 +22,7 @@ export default function UserProfile() {
     getUserItems(setError);
   }, []);
 
-  const handleEdit = (id) => {
-    alert(`Edit item with ID ${id}`);
-  };
 
-  const handleDelete = (id) => {
-    if (confirm('Are you sure you want to delete this item?')) {
-      // optionally remove from context or trigger a refresh
-    }
-  };
 
   return (
     <div className="ml-80 p-6 max-w-5xl bg-[#f5f0f2] rounded-xl shadow-lg border border-[#bea8aa]">
@@ -62,13 +57,18 @@ export default function UserProfile() {
 
             <div className="mt-auto flex gap-2 pt-4">
               <button
-                onClick={() => handleEdit(item.id)}
+                onClick={() => handleEditItem(item)}
                 className="flex-1 bg-[#a8b2a1] hover:bg-[#7c7f65] text-white py-1 rounded"
               >
                 Edit
               </button>
               <button
-                onClick={() => handleDelete(item.id)}
+                onClick={() => {
+                  if (confirm("Are you sure you want to delete this item?")) {
+                    deleteItem(item.id);
+                  }
+                }}
+                
                 className="flex-1 bg-red-400 hover:bg-red-500 text-white py-1 rounded"
               >
                 Delete
@@ -77,6 +77,9 @@ export default function UserProfile() {
           </div>
         ))}
       </div>
+
+      {/*popup modal if an item is being edited */}
+      <EditItemModal />
     </div>
   );
 }
