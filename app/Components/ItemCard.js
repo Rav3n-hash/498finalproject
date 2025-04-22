@@ -5,7 +5,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 export default function ItemCard({ item }) {
   return (
-    <div className="bg-[#cfcd2] rounded-2xl shadow-md hover:shadow-lg hover:bg-gray-200/10 overflow-hidden">
+    <div className="bg-[#cfcd2] rounded-2xl border-2 border-black/25 shadow-sm hover:shadow-md hover:shadow-[#dcf7c9] hover:bg-gray-200/20 overflow-hidden">
       <img
         src={item.image}
         alt={item.name}

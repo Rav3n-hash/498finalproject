@@ -55,7 +55,7 @@ export default function LeftNavbar() {
 
 <div className="ml-4 text-lg p-3 mb-2  hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
       <FontAwesomeIcon icon={faBagShopping} className='mr-2' />
-        <Link href="/">Browse
+        <Link href="/Browse">Browse
         </Link>
       </div>
 
