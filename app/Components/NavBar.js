@@ -86,12 +86,6 @@ export default function LeftNavbar() {
         </div>
       )}
 
-  <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
-      <Link href="/Profile">
-        <FontAwesomeIcon icon={faUser} className='mr-2' /> Immediate View Profile for testing
-        </Link>
-      </div>
-
 {/**PROFILE "DROPDOWN" */}
       <button
         onClick={toggleProfileOptions}

@@ -55,7 +55,7 @@ export default function PostItem() {
 
   /************************************************UI DISPLAY***************************************************/
   return (
-    <div className="ml-80 max-w-3/4 p-6 h-175 bg-[#e0c4ce] rounded-xl shadow-lg border-2 border-[#2e2e2e]">
+    <div className="ml-80 mt-2 max-w-3/4 p-6 h-170 bg-[#eedce2] rounded-xl shadow-lg border-2 border-[#2e2e2e]/50">
       <h1 className="text-3xl font-bold text-[#2e2e2e] mb-6 text-center">Post a New Item</h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
