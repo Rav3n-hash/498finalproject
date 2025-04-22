@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faBagShopping, faUser, faPlusCircle, faSoap, faUtensils, faGem, faAppleAlt, faCouch, faShirt, faThList, faCartShopping, faFileInvoice, faIdCard, faLock, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react';
 import Link from "next/link";
+import MiniLoginPanel from './LoginPanel';
 
 
 export default function LeftNavbar() {
@@ -12,12 +13,6 @@ export default function LeftNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // if(sessionStorage.getItem("loggedIn"==1)){isLoggedIn=true}
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    console.log("User logged out");
-  };
 
   const categories = [
     { name: " Bath & Body", icon: faSoap },
@@ -67,6 +62,8 @@ export default function LeftNavbar() {
         <Link href="/">Home
         </Link>
       </div>
+
+{/**CATEGORY "DROPDOWN" */}
       <button
         onClick={toggleCategories}
         className="text-left ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 transition duration-400 cursor-pointer">
@@ -95,6 +92,7 @@ export default function LeftNavbar() {
         </Link>
       </div>
 
+{/**PROFILE "DROPDOWN" */}
       <button
         onClick={toggleProfileOptions}
         className="text-left ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 transition duration-400 cursor-pointer"
@@ -103,46 +101,42 @@ export default function LeftNavbar() {
       </button>
 
       {/* Options */}
-      {showProfileMenu && (
-        <div className="ml-10 text-black/40">
-          {isLoggedIn ? (
-            profileOptions.map((option, index) => {
+        {showProfileMenu && (
+          <div className="ml-10 text-black/40">
+            {profileOptions.map((option, index) => {
               const pathMap = {
-                " View Profile": "/Profile",
-                " View Orders": "/Profile/orders",
-                " View Cart": "/Profile/cart",
-                " Logout": "/Logout"
+                "View Profile":"/Profile",
+                "View Orders":"/Profile/Orders",
+                "View Cart":"/Profile/cart",
               };
+
+              const trimmedName = option.name.trim();
+              const path = pathMap[trimmedName];
+              if (!path) return null;
+
               return (
-                <Link key={index} href={pathMap[option.name]}>
+                <Link key={index} href={path}>
                   <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
                     <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
                     {option.name}
                   </div>
                 </Link>
               );
-            })
-          ) : (
-            profileLogin.map((option, index) => (
-              <Link key={index} href="/Login">
-                <div className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer">
-                  <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
-                  {option.name}
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
-      )}
+            })}
+          </div>
+        )}
 
       <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
       <Link href="/PostItem">
         <FontAwesomeIcon icon={faPlusCircle} className='mr-2' /> Post Item
         </Link>
       </div>
+
+    <MiniLoginPanel/>
     </div >
 
-    </>
-
+  
+   </>
   );
+
 }
