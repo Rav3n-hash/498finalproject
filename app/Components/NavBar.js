@@ -107,7 +107,7 @@ export default function LeftNavbar() {
               const pathMap = {
                 "View Profile":"/Profile",
                 "View Orders":"/Profile/Orders",
-                "View Cart":"/Profile/cart",
+                "View Cart":"/Profile/Cart",
               };
 
               const trimmedName = option.name.trim();
