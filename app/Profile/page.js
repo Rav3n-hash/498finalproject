@@ -17,12 +17,25 @@ export default function UserProfile() {
   } = useContext(MyContext);
 
   const [error, setError] = useState("");
+  const {isLoggedIn}=useContext(MyContext);
+
 
   useEffect(() => {
     getUserItems(setError);
   }, []);
 
 
+
+  if (!isLoggedIn){
+    return(
+      <div className="ml-20">
+      <div className="ml-80 mt-2">
+        <h1 className="text-3xl font-bold text-[#2e2e2e] mb-3">Please Login to View Profile, Cart, and Orders</h1>
+      </div>
+    </div>
+
+    )
+  }
 
   return (
     <div className="ml-80 p-6 max-w-5xl bg-[#f5f0f2] rounded-xl shadow-lg border border-[#bea8aa]">

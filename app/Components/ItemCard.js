@@ -7,6 +7,7 @@ import { useContext } from 'react';
 
 export default function ItemCard({ item }) {
   const {updateCart}=useContext(MyContext);
+  const {isLoggedIn}=useContext(MyContext);
   return (
     <div className="bg-[#cfcd2] rounded-2xl border-2 border-black/25 shadow-sm hover:shadow-md hover:shadow-[#dcf7c9] hover:bg-gray-200/20 overflow-hidden">
       <img
@@ -26,13 +27,14 @@ export default function ItemCard({ item }) {
           {item.companyname ? ` @ ${item.companyname}` : ""}
         </p>
 
-        
+       {isLoggedIn?(
         <button
         className="ml-60 h-8 bg-red-400 hover:bg-red-300 rounded-sm text-black/50 w-30"
         onClick={() => updateCart(item)}
         > <FontAwesomeIcon icon={faCartShopping} className=' text-sm mr-2' />
         Add to Cart
         </button>
+       ):""}
       </div>
     </div>
   );

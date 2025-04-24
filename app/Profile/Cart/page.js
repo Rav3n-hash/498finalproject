@@ -5,6 +5,7 @@ import { MyContext } from "@/app/Components/MyContext";
 
 export default function ViewCart() {
   const { cart, clearCart, removeItem, placeOrder } = useContext(MyContext);
+  const {isLoggedIn}=useContext(MyContext);
 
   const total = cart?.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2) || "0.00";
   useEffect(() => {

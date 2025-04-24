@@ -87,6 +87,7 @@ export function Provider({ children }) {
                 setCompanyName(user.companyname || "");
                 router.push("/");
 
+
             }
         } catch (err) {
             setError("Invalid email or password.");
