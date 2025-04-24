@@ -101,4 +101,53 @@ async function DeleteItem(id) {
     }
   }
   
-  export {GetItems, GetItemsByUserId, UpdateItem, DeleteItem}
+  //get items by category
+  async function GetItemsByCategory(catId) {
+    try {
+      const result = catId === -1
+        ? await pool.query(`
+          SELECT 
+            i.itemid AS id,
+            i.title,
+            i.description,
+            i.price,
+            i.quantityAvailable AS stock,
+            i.image,
+            c.catid,
+            c.category,
+            CONCAT(u.firstname, '_', u.lastname) AS seller,
+            u.companyName AS companyname
+          FROM items i
+          JOIN users u ON i.userID = u.userID
+          JOIN categories c ON i.catID = c.catID
+        `)
+        : await pool.query(`
+          SELECT 
+            i.itemid AS id,
+            i.title,
+            i.description,
+            i.price,
+            i.quantityAvailable AS stock,
+            i.image,
+            c.catid,
+            c.category,
+            CONCAT(u.firstname, '_', u.lastname) AS seller,
+            u.companyName AS companyname
+          FROM items i
+          JOIN users u ON i.userID = u.userID
+          JOIN categories c ON i.catID = c.catID
+          WHERE i.catID = $1
+        `, [catId]);
+  
+      return result.rows.map(item => ({
+        ...item,
+        price: parseFloat(item.price)
+      }));
+  
+    } catch (error) {
+      console.error("Error fetching items by category:", error);
+      return [];
+    }
+  }
+  
+  export {GetItems, GetItemsByUserId, UpdateItem, DeleteItem, GetItemsByCategory}
