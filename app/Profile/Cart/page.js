@@ -4,25 +4,13 @@ import { useContext, useEffect } from "react";
 import { MyContext } from "@/app/Components/MyContext";
 
 export default function ViewCart() {
-  const { cart, clearCart, removeItem, placeOrder, isLoggedIn } = useContext(MyContext);
-
+  const { cart, clearCart, removeItem, placeOrder } = useContext(MyContext);
+  const {isLoggedIn}=useContext(MyContext);
 
   const total = cart?.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2) || "0.00";
   useEffect(() => {
     console.log("Cart in ViewCart:", cart);
   }, [cart]);
-
-
-  if (!isLoggedIn){
-    return(
-      <div className="ml-20">
-      <div className="ml-80 mt-2">
-        <h1 className="text-3xl font-bold text-[#2e2e2e] mb-3">Please Login to View Cart</h1>
-      </div>
-    </div>
-
-    )
-  }
 
   return (
     <div className="ml-20">
