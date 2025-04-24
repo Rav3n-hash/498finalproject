@@ -27,7 +27,7 @@ export function Provider({ children }) {
     const [orderList, setOrderList] = useState([]);
     const [userOrders, setUserOrders] = useState([]);
     //cart variables
-    const [cart, setCart]=useState([]);
+    const [cart, setCart] = useState([]);
 
 
 
@@ -41,7 +41,10 @@ export function Provider({ children }) {
             setEmail(sessionStorage.getItem("email") || "");
             setPic(sessionStorage.getItem("pic") || "");
             setCompanyName(sessionStorage.getItem("companyname") || "");
-            setCart(sessionStorage.getItem("cart") || []);
+            const rawCart = sessionStorage.getItem("cart");
+            console.log("Raw cart from sessionStorage:", rawCart);
+            setCart(JSON.parse(rawCart || "[]"));
+
         }
     }, []);
 
@@ -136,107 +139,107 @@ export function Provider({ children }) {
     //**************************ORDER FUNCTIONS***************************************** */
 
     async function getOrders() {
-      try {
-        const userId = sessionStorage.getItem("userid");
-        if (!userId) return;
-    
-        console.log("Fetching orders for user:", userId);
-        const userOrders = await GetOrdersForSeller(userId);
-    
-        console.log("User's Orders:", userOrders);
-        setUserOrders(userOrders);
-      } catch (error) {
-        console.error("Failed to get orders:", error);
-      }
+        try {
+            const userId = sessionStorage.getItem("userid");
+            if (!userId) return;
+
+            console.log("Fetching orders for user:", userId);
+            const userOrders = await GetOrdersForSeller(userId);
+
+            console.log("User's Orders:", userOrders);
+            setUserOrders(userOrders);
+        } catch (error) {
+            console.error("Failed to get orders:", error);
+        }
     }
-    async function deleteOrder(id){
-        try{
+    async function deleteOrder(id) {
+        try {
             await DeleteOrder(id);
-            const userId= sessionStorage.getItem("userid");
+            const userId = sessionStorage.getItem("userid");
             const updated = await GetOrdersForSeller(userId);
 
             setOrderList(updated);
-        }catch(error){
+        } catch (error) {
             console.error("Delete failed:", error);
         }
     }
-    async function getAllOrders(){
+    async function getAllOrders() {
         //for admin to view all orders in the site to view, edit, delete
     }
-    async function getOrdersPendingOrSold(){
+    async function getOrdersPendingOrSold() {
         //for users to view the orders that are pending or that they have sold
     }
     //***************************CART FUNCTIONS********************************************** */
     function updateCart(item) {
         try {
-          let currentCart = JSON.parse(sessionStorage.getItem("cart")) || [];
-          currentCart.push(item);
-          sessionStorage.setItem("cart", JSON.stringify(currentCart));
-          setCart(currentCart);
-          alert("Added to cart: " + item.title);
+            let currentCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+            currentCart.push(item);
+            sessionStorage.setItem("cart", JSON.stringify(currentCart));
+            setCart(currentCart);
+            alert("Added to cart: " + item.title);
         } catch (err) {
-          console.error("Cart update failed:", err);
+            console.error("Cart update failed:", err);
         }
-      }
-    function clearCart(){
+    }
+    function clearCart() {
         setCart([]);
         sessionStorage.removeItem("cart");
-    }      
+    }
     function removeItem(indexToRemove) {
         try {
-          let currentCart = JSON.parse(sessionStorage.getItem("cart")) || [];
-          const updatedCart = currentCart.filter((_, index) => index !== indexToRemove);
-          sessionStorage.setItem("cart", JSON.stringify(updatedCart));
-          setCart(updatedCart);
+            let currentCart = JSON.parse(sessionStorage.getItem("cart")) || [];
+            const updatedCart = currentCart.filter((_, index) => index !== indexToRemove);
+            sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+            setCart(updatedCart);
         } catch (err) {
-          console.error("Failed to remove item from cart:", err);
+            console.error("Failed to remove item from cart:", err);
         }
-      }
+    }
 
-      async function placeOrder() {
+    async function placeOrder() {
         try {
-          const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
-          const userId = parseInt(sessionStorage.getItem("userid"));
-      
-          if (!userId || cart.length === 0) {
-            alert("Cannot place order: No items or user not logged in.");
-            return;
-          }
-      
-          if (cart.length > 3) {
-            alert("Only up to 3 items can be ordered at once.");
-            return;
-          }
-      
-          const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
-      
-          const payload = {
-            userid: userId,
-            item1: cart[0]?.id || null,
-            item2: cart[1]?.id || null,
-            item3: cart[2]?.id || null,
-            price: total,
-            orderdate: new Date().toISOString(),
-          };
-      
-          await AddOrder(payload, userId);
-          alert("Order placed!");
-          sessionStorage.removeItem("cart");
-          setCart([]); // <- make sure you have setCart in context
-      
+            const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
+            const userId = parseInt(sessionStorage.getItem("userid"));
+
+            if (!userId || cart.length === 0) {
+                alert("Cannot place order: No items or user not logged in.");
+                return;
+            }
+
+            if (cart.length > 3) {
+                alert("Only up to 3 items can be ordered at once.");
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+
+            const payload = {
+                userid: userId,
+                item1: cart[0]?.id || null,
+                item2: cart[1]?.id || null,
+                item3: cart[2]?.id || null,
+                price: total,
+                orderdate: new Date().toISOString(),
+            };
+
+            await AddOrder(payload, userId);
+            alert("Order placed!");
+            sessionStorage.removeItem("cart");
+            setCart([]); // <- make sure you have setCart in context
+
         } catch (error) {
-          console.error("Place order failed:", error);
-          alert("Something went wrong.");
+            console.error("Place order failed:", error);
+            alert("Something went wrong.");
         }
-      }
-       
+    }
+
 
 
 
     const contextValue = {
-        userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList,getOrders,setOrderList,
-        updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders,userOrders, deleteOrder,
-        getAllOrders, getOrdersPendingOrSold, updateCart,clearCart,setCart, removeItem,placeOrder
+        userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
+        updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
+        getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart,
     };
 
     //*************************RETURN**************************************** */
