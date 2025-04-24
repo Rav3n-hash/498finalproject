@@ -1,41 +1,61 @@
-"use client"
+"use client";
 
-import { useState } from "react";
-import items from "../Service/items";
+import { useContext, useState, useEffect } from "react";
 import ItemCard from "../Components/ItemCard";
+import { MyContext } from "../Components/MyContext";
 
 export default function Browse() {
-  // State to track the selected category
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { getItemsByCategory } = useContext(MyContext);
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([{ catid: -1, category: "All" }]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(-1); // -1 means "All"
 
-  // Extract unique categories from the items
-  const categories = ["All", ...new Set(items.map(item => item.category))]; //shouldn't have to replac for db
+  // Fetch all items on initial load
+  useEffect(() => {
+    const fetchAll = async () => {
+      const allItems = await getItemsByCategory(-1); // <- you can treat -1 in your backend as "all items"
+      setItems(allItems);
 
-  // Filter items based on the selected category
-  const filteredItems = selectedCategory === "All"
-    ? items
-    : items.filter(item => item.category === selectedCategory);
+      const unique = new Map();
+      allItems.forEach(item => unique.set(item.catid, item.category));
+
+      const dynamicCats = Array.from(unique.entries()).map(([catid, category]) => ({ catid, category }));
+      setCategories([{ catid: -1, category: "All" }, ...dynamicCats]);
+    };
+
+    fetchAll();
+  }, []);
+
+  // Fetch items when category changes
+  useEffect(() => {
+    const fetch = async () => {
+      const filtered = await getItemsByCategory(selectedCategoryId);
+      setItems(filtered);
+    };
+
+    fetch();
+  }, [selectedCategoryId]);
 
   return (
     <div className="ml-60 p-8">
       <h2 className="text-3xl font-bold mb-6 text-[#2e2e2e]">Browse Categories:</h2>
 
-      {/* Category tabs */}
       <div className="mb-6 flex gap-4">
-        {categories.map(category => (
+        {categories.map(({ catid, category }) => (
           <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`text-lg font-medium px-4 py-2 rounded-md ${selectedCategory === category ? 'bg-[#7c7f65] text-white' : 'bg-[#cfc7d2] text-[#2e2e2e]'}`}
+            key={catid}
+            onClick={() => setSelectedCategoryId(catid)}
+            className={`text-lg font-medium px-4 py-2 rounded-md ${
+              selectedCategoryId === catid ? "bg-[#7c7f65] text-white" : "bg-[#cfc7d2] text-[#2e2e2e]"
+            }`}
           >
             {category}
           </button>
         ))}
       </div>
 
-      {/* Display filtered items */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredItems.map(item => (
+        {items.map(item => (
           <ItemCard key={item.id} item={item} />
         ))}
       </div>
