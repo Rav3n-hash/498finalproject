@@ -13,7 +13,15 @@ async function GetUsers() {
   }
   let list = [];
   result.rows.map((tmp, index) => {
-    var user = { "userid": tmp.userid, "firstname": tmp.firstname, "lastname": tmp.lastname, "email": tmp.email, "pic": tmp.pic, "companyname": tmp.companyname };
+    var user = { 
+      "userid": tmp.userid, 
+      "firstname": tmp.firstname, 
+      "lastname": tmp.lastname, 
+      "email": tmp.email, 
+      "pic": tmp.pic, 
+      "companyname": tmp.companyname, 
+      "companydesc": tmp.companydesc  
+    };
     list.push(user);
   })
   console.log(list);

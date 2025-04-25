@@ -85,12 +85,22 @@ export function Provider({ children }) {
                 setEmail(user.email);
                 setPic(user.pic || "");
                 setCompanyName(user.companyname || "");
-                router.push("/");
+                //router.push("/");
 
 
             }
         } catch (err) {
             setError("Invalid email or password.");
+        }
+    }
+
+    async function getAllUsers() {
+        try {
+            const users = await GetUsers();
+            return users;
+        } catch (err) {
+            console.error("Failed to fetch users:", err);
+            return [];
         }
     }
 
@@ -256,7 +266,7 @@ export function Provider({ children }) {
     const contextValue = {
         userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
         updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
-        getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems,
+        getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers
     };
 
     //*************************RETURN**************************************** */

@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import {MyContext} from '../Components/MyContext';
+import MiniLoginPanel from '../Components/LoginPanel';
 
 export default function PostItem() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,8 @@ export default function PostItem() {
     image: '',
     price: '',
   });
+
+  const {isLoggedIn}=useContext(MyContext);
 
   /************************************************HANDLE ALL INPUT CHANGES**************************************************/
   function handleChange(e) {
@@ -54,6 +58,23 @@ export default function PostItem() {
   }
 
   /************************************************UI DISPLAY***************************************************/
+
+    if (!isLoggedIn) {
+      return (
+        <div className="ml-60 mt-20 flex justify-center items-center h-[70vh]">
+          <div className="bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-10 text-center max-w-xl">
+            <h1 className="text-4xl font-bold text-[#2e2e2e] mb-4">Sorry, Only Members Can Access This Page!</h1>
+            <p className="text-lg text-[#7c7f65] mb-6">
+              To Add an Item, Please Login
+            </p>
+            <div className="flex ml-25 w-75">
+              <MiniLoginPanel/>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
   return (
     <div className="ml-80 mt-2 max-w-3/4 p-6 h-170 bg-[#eedce2] rounded-xl shadow-lg border-2 border-[#2e2e2e]/50">
       <h1 className="text-3xl font-bold text-[#2e2e2e] mb-6 text-center">Post a New Item</h1>

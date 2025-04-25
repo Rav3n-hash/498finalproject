@@ -24,7 +24,7 @@ export default function MiniLoginPanel() {
 
   const handleLogout = () => {
     updateLogout();
-    router.push("/");
+    //router.push("/");
   };
 
   const fullName = `${fName} ${lName}`.trim();
@@ -53,7 +53,7 @@ export default function MiniLoginPanel() {
           </button>
         </>
       ) : (
-        <>
+        <div className="flex flex-col justify-center items-center">
           <input
             type="text"
             placeholder="Email"
@@ -70,12 +70,19 @@ export default function MiniLoginPanel() {
           />
           <button
             onClick={() => loginUser(emailInput, password, setError)}
-            className="w-full bg-[#a8b2a1] hover:bg-[#7c7f65] text-white py-2 rounded-md"
+            className="w-3/4 bg-[#929f89] hover:bg-[#7c7f65] text-white py-2 rounded-md"
           >
             Login
           </button>
+          <h2 className="text-center italic text-[#6f744f]">Or</h2>
+          <button
+            onClick={() => loginUser(emailInput, password, setError)}
+            className="w-3/4 bg-[#929f89] hover:bg-[#7c7f65] text-white py-2 rounded-md"
+          >
+            Sign Up
+          </button>
           {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        </>
+        </div>
       )}
     </div>
   );

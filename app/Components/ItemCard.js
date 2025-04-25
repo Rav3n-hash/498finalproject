@@ -16,7 +16,7 @@ export default function ItemCard({ item }) {
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <h3 className="text-xl font-semibold text-[#2e2e2e] mb-1">{item.name}</h3>
+        <h3 className="text-xl font-semibold text-[#2e2e2e] mb-1">{item.title}</h3>
         <p className="text-sm text-gray-600 mb-2">{item.description}</p>
         <div className="flex justify-between items-center text-sm mb-2">
           <span className="text-[#a8b2a1] font-medium">${item.price.toFixed(2)}</span>
