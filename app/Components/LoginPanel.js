@@ -76,7 +76,7 @@ export default function MiniLoginPanel() {
           </button>
           <h2 className="text-center italic text-[#6f744f]">Or</h2>
           <button
-            onClick={() => loginUser(emailInput, password, setError)}
+            onClick={() => router.push("/SignUp")}
             className="w-3/4 bg-[#929f89] hover:bg-[#7c7f65] text-white py-2 rounded-md"
           >
             Sign Up

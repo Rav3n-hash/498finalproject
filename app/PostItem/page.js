@@ -65,25 +65,25 @@ export default function PostItem() {
           <div className="bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-10 text-center max-w-xl">
             <h1 className="text-4xl font-bold text-[#2e2e2e] mb-4">Sorry, Only Members Can Access This Page!</h1>
             <p className="text-lg text-[#7c7f65] mb-6">
-              To Add an Item, Please Login
+              To Post An Item, Please Login.
             </p>
-            <div className="flex ml-25 w-75">
+            <div className="flex justify-center items-center">
               <MiniLoginPanel/>
             </div>
           </div>
-        </div>
+      </div>
       );
     }
 
   return (
-    <div className="ml-80 mt-2 max-w-3/4 p-6 h-170 bg-[#eedce2] rounded-xl shadow-lg border-2 border-[#2e2e2e]/50">
-      <h1 className="text-3xl font-bold text-[#2e2e2e] mb-6 text-center">Post a New Item</h1>
+    <div className="ml-130 mt-1 bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-4 text-center w-1/2 h-auto">
+      <h1 className="text-3xl font-bold text-[#2e2e2e] mb-4 text-center">Post a New Item</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-3">
 
         {/* Title */}
         <div>
-          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Title</label>
+          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Title</label>
           <input
             name="title"
             value={formData.title}
@@ -97,7 +97,7 @@ export default function PostItem() {
 
         {/* Description */}
         <div>
-          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Description</label>
+          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Description</label>
           <textarea
             name="description"
             value={formData.description}
@@ -110,7 +110,7 @@ export default function PostItem() {
 
         {/* Category (as select dropdown) */}
         <div>
-            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Category</label>
+            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Category</label>
             <select
                 name="category"
                 value={formData.category}
@@ -132,7 +132,7 @@ export default function PostItem() {
         {/* Quantity and Price */}
         <div className="flex gap-4">
           <div className="flex-1">
-            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Quantity</label>
+            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Quantity</label>
             <input
               name="quantity"
               value={formData.quantity}
@@ -145,7 +145,7 @@ export default function PostItem() {
           </div>
 
           <div className="flex-1">
-            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Price ($)</label>
+            <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Price ($)</label>
             <input
               name="price"
               value={formData.price}
@@ -159,8 +159,9 @@ export default function PostItem() {
         </div>
 
         {/* Image URL */}
-        <div>
-          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1">Image URL</label>
+      <div className="flex flex-row">
+        <div className='flex flex-col'>
+          <label className="block text-lg font-semibold text-[#2e2e2e] mb-1 text-left">Image URL</label>
           <input
             name="image"
             value={formData.image}
@@ -168,26 +169,25 @@ export default function PostItem() {
             type="url"
             placeholder="https://example.com/image.jpg"
             required
-            className="w-full border border-[#7c7f65] rounded px-4 py-2 bg-white focus:outline-none"
+            className="w-100 border border-[#7c7f65] rounded px-4 py-2 bg-white focus:outline-none"
           />
         </div>
 
         {/* Image Preview */}
-        {formData.image && (
-          <div className="flex flex-col items-center mt-4">
+          <div className="flex flex-col items-center mt-4 ml-20">
             <img
-              src={formData.image}
-              alt="Preview"
-              className="w-60 h-60 object-cover rounded-md border-2 border-dashed border-[#2e2e2e] shadow"
+              src={null||formData.image}
+              className="w-30 h-30 object-cover rounded-md border-2 border-dashed border-[#2e2e2e] shadow"
             />
             <p className="text-[#2e2e2e] mt-2">Image Preview</p>
           </div>
-        )}
+
+      </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-50 bg-[#7c7f65] hover:bg-[#a8b2a1] text-white font-semibold py-2 rounded transition duration-300"
+          className="w-50 h-10 bg-[#7c7f65] hover:bg-[#a8b2a1] text-white font-semibold py-2 rounded transition duration-300"
         >
           Post Item
         </button>

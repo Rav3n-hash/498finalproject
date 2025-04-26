@@ -16,13 +16,13 @@ export default function ViewCart() {
   /************************************************UI DISPLAY**************************************************/
     if (!isLoggedIn) {
       return (
-        <div className="ml-60 mt-20 flex justify-center items-center h-[70vh]">
+       <div className="ml-60 mt-20 flex justify-center items-center h-[70vh]">
           <div className="bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-10 text-center max-w-xl">
             <h1 className="text-4xl font-bold text-[#2e2e2e] mb-4">Sorry, Only Members Can Access This Page!</h1>
             <p className="text-lg text-[#7c7f65] mb-6">
-              To access your profile, cart, and orders, please log in and settle in.
+              To Access Your Profile, Cart, and Orders, Please Login and Settle In.
             </p>
-            <div className="flex ml-25 w-75">
+            <div className="flex justify-center items-center">
               <MiniLoginPanel/>
             </div>
           </div>
