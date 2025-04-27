@@ -18,9 +18,9 @@ export default function LeftNavbar() {
   ];
 
   const adminOptions = [
-    { name: "View All Users", icon: faUser, path: "/Admin/Users" },
-    { name: "View All Orders", icon: faFileInvoice, path: "/Admin/Orders" },
-    { name: "See All Items", icon: faThList, path: "/Items" },
+    { name: "Admin Module", icon: faUser, path: "/Admin" },
+    { name: "View All Orders", icon: faFileInvoice, path: "/Admin/All_Orders" },
+    { name: "View All Users", icon: faThList, path: "/Admin/All_Users" },
   ];
 
   const toggleProfileOptions = () => {
@@ -88,12 +88,21 @@ export default function LeftNavbar() {
           </div>
         )}
 
-        <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
-          <Link href="/PostItem">
-            <FontAwesomeIcon icon={faPlusCircle} className='mr-2' />
-            {userRole === 1 ? "See All Items" : "Post Item"}
-          </Link>
-        </div>
+        {userRole !== 1 ? (
+          <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
+            <Link href="/PostItem">
+              <FontAwesomeIcon icon={faPlusCircle} className='mr-2' />
+              Post Item
+            </Link>
+          </div>
+        ) : (
+          <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
+            <Link href="/Admin/All_Items">
+              <FontAwesomeIcon icon={faPlusCircle} className='mr-2' />
+              See All Items
+            </Link>
+          </div>
+        )}
 
         <MiniLoginPanel />
       </div>

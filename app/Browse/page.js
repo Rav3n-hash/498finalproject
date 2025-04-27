@@ -6,7 +6,7 @@ import StoreCard from "../Components/StoreCard";
 import { MyContext } from "../Components/MyContext";
 
 export default function Browse() {
-  const { getItemsByCategory, getAllUsers } = useContext(MyContext);
+  const { getItemsByCategory, getAllUsers, userRole } = useContext(MyContext);
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([{ catid: -1, category: "All" }]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1); // -1 means "All"
@@ -81,7 +81,7 @@ export default function Browse() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {showShops
-          ? shops.map(user => <StoreCard key={user.userid} user={user} />)
+          ? shops.map(user => <StoreCard key={user.userid} user={user} handleDelete={userRole === 1 ? handleDelete : null} />) //pass handledelete only if userRole is 1
           : items.map(item => <ItemCard key={item.id} item={item} />)}
       </div>
     </div>

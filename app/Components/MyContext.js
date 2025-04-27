@@ -119,6 +119,14 @@ export function Provider({ children }) {
             console.error("Failed to add user:", err);
         }
     }
+
+    async function deleteUser(id) {
+        try {
+            await DeleteUser(id);
+        } catch (error) {
+            console.error("Delete failed:", error);
+        }
+    }
     //*************************ITEM FUNCTIONS******************************************* */
     async function getUserItems(setError) {
         try {
@@ -224,8 +232,15 @@ export function Provider({ children }) {
             console.error("Delete failed:", error);
         }
     }
+
     async function getAllOrders() {
-        //for admin to view all orders in the site to view, edit, delete
+        try {
+            const orders = await GetOrders();
+            return orders;
+          } catch (err) {
+            console.error("Failed to fetch all Orders:", err);
+            return [];
+          } 
     }
     async function getOrdersPendingOrSold() {
         //for users to view the orders that are pending or that they have sold
@@ -301,7 +316,7 @@ export function Provider({ children }) {
         userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
         updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
         getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers, addNewUser,
-        addNewItem, getAllCategories,
+        addNewItem, getAllCategories, deleteUser
     };
 
     //*************************RETURN**************************************** */

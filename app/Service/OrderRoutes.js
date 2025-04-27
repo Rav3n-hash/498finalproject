@@ -3,14 +3,29 @@ import { defaultConfig } from "next/dist/server/config-shared.js";
 import pool from "./PoolConnection.js";
 
 async function GetOrders() {
-    try {
-      const result = await pool.query("SELECT * FROM orders");
-      return result.rows;
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      throw error;
-    }
+  try {
+    const result = await pool.query(
+      `SELECT 
+        o.orderid, o.userid, o.price, o.orderdate,
+
+        u.firstname AS user_firstname, u.lastname AS user_lastname,
+
+        i1.itemid AS item1_id, i1.title AS item1_title, i1.description AS item1_description, i1.image AS item1_image, i1.quantityAvailable AS item1_stock,
+        i2.itemid AS item2_id, i2.title AS item2_title, i2.description AS item2_description, i2.image AS item2_image, i2.quantityAvailable AS item2_stock,
+        i3.itemid AS item3_id, i3.title AS item3_title, i3.description AS item3_description, i3.image AS item3_image, i3.quantityAvailable AS item3_stock
+
+      FROM orders o
+      LEFT JOIN users u ON o.userid = u.userid
+      LEFT JOIN items i1 ON o.item1 = i1.itemid
+      LEFT JOIN items i2 ON o.item2 = i2.itemid
+      LEFT JOIN items i3 ON o.item3 = i3.itemid`
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
   }
+}
 
   async function DeleteOrder(orderId) {
     try {
