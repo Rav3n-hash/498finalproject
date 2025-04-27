@@ -6,7 +6,7 @@ import StoreCard from "../Components/StoreCard";
 import { MyContext } from "../Components/MyContext";
 
 export default function Browse() {
-  const { getItemsByCategory, getAllUsers, userRole } = useContext(MyContext);
+  const { getItemsByCategory, getAllUsers, userRole, adminDelItem, deleteUser } = useContext(MyContext);
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([{ catid: -1, category: "All" }]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1); // -1 means "All"
@@ -49,6 +49,21 @@ export default function Browse() {
     fetchUsers();
   }, []);
 
+  const handleDeleteItem = async (item) => {
+    if (confirm("Are you sure you want to delete this Item?")) {
+      await adminDelItem(item.id); // <-- pass item.id only
+      setItems(prevItems => prevItems.filter(i => i.id !== item.id)); // <-- fix the typo
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (confirm("Are you sure you want to delete this user?")) {
+      await deleteUser(userId);
+      setShops(prevShops => prevShops.filter(user => user.userid !== userId));
+    }
+  };
+
+
   return (
     <div className="ml-60 p-8">
       <h2 className="text-3xl font-bold mb-6 text-[#2e2e2e]">Browse Categories:</h2>
@@ -81,8 +96,8 @@ export default function Browse() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {showShops
-          ? shops.map(user => <StoreCard key={user.userid} user={user} handleDelete={userRole === 1 ? handleDelete : null} />) //pass handledelete only if userRole is 1
-          : items.map(item => <ItemCard key={item.id} item={item} />)}
+          ? shops.map(user => <StoreCard key={user.userid} user={user} handleDelete={userRole === 1 ? () => handleDeleteUser(user.userid) : null} />) //pass handledelete only if userRole is 1
+          : items.map(item => <ItemCard key={item.id} item={item}  handleDelete={userRole === 1 ? () => handleDeleteItem(item) : null} />)}
       </div>
     </div>
   );

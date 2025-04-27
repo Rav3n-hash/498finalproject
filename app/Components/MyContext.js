@@ -168,6 +168,14 @@ export function Provider({ children }) {
             console.error("Delete failed:", error);
         }
     }
+
+    async function adminDelItem(id) {
+        try {
+            await DeleteItem(id);
+        } catch (error) {
+            console.error("Delete failed:", error);
+        }
+    }
     async function getItemsByCategory(catId) {
         try {
           const items = await GetItemsByCategory(catId);
@@ -316,7 +324,7 @@ export function Provider({ children }) {
         userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
         updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
         getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers, addNewUser,
-        addNewItem, getAllCategories, deleteUser
+        addNewItem, getAllCategories, deleteUser, adminDelItem
     };
 
     //*************************RETURN**************************************** */

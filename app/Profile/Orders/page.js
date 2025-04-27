@@ -43,7 +43,7 @@ export default function ViewOrders() {
 
   return (
     <div className="ml-105 p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">Your Pending Orders</h1>
+      <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">Placed Orders:</h1>
 
       {sortedOrders.length === 0 ? (
         <p className="text-center text-[#a8b2a1]">No orders found.</p>

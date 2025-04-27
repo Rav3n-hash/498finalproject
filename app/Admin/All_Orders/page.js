@@ -3,8 +3,9 @@
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/app/Components/MyContext";
 
+
 export default function AllOrders() {
-  const { getAllOrders, deleteOrder } = useContext(MyContext);
+  const { getAllOrders, deleteOrder, isLoggedIn, userRole} = useContext(MyContext);
   const [orders, setOrders] = useState([]);
   const [sortedOrders, setSortedOrders] = useState([]); // Added state for sorted orders
 
@@ -27,6 +28,21 @@ export default function AllOrders() {
       setOrders(orders.filter(order => order.orderid !== orderId));
     }
   };
+
+
+  if (!isLoggedIn || userRole !==1) {
+    return (
+     <div className="ml-60 mt-20 flex justify-center items-center h-[70vh]">
+        <div className="bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-10 text-center max-w-xl">
+          <h1 className="text-4xl font-bold text-[#e22c2c] mb-4">Access Denied</h1>
+          <h1 className="text-4xl font-bold text-[#2e2e2e] mb-4">Sorry, Only Admin Can Access This Page!</h1>
+          <p className="text-lg text-[#2e2e2e] mb-6">
+            Nice try though!
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="ml-105 p-6 max-w-4xl mx-auto">

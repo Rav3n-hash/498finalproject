@@ -1,7 +1,7 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBagShopping, faUser, faPlusCircle, faFileInvoice, faIdCard, faLock, faArrowRightFromBracket, faThList } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faBagShopping, faUser, faPlusCircle, faFileInvoice, faIdCard, faLock, faArrowRightFromBracket, faUsers, faUserTie, faList } from '@fortawesome/free-solid-svg-icons';
 import { useState, useContext } from 'react';
 import Link from "next/link";
 import MiniLoginPanel from './LoginPanel';
@@ -18,9 +18,9 @@ export default function LeftNavbar() {
   ];
 
   const adminOptions = [
-    { name: "Admin Module", icon: faUser, path: "/Admin" },
+    { name: "Admin Module", icon: faUserTie, path: "/Admin" },
     { name: "View All Orders", icon: faFileInvoice, path: "/Admin/All_Orders" },
-    { name: "View All Users", icon: faThList, path: "/Admin/All_Users" },
+    { name: "View All Users", icon: faUsers, path: "/Admin/All_Users" },
   ];
 
   const toggleProfileOptions = () => {
@@ -98,7 +98,7 @@ export default function LeftNavbar() {
         ) : (
           <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
             <Link href="/Admin/All_Items">
-              <FontAwesomeIcon icon={faPlusCircle} className='mr-2' />
+              <FontAwesomeIcon icon={faList} className='mr-2' />
               See All Items
             </Link>
           </div>
