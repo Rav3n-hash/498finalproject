@@ -12,7 +12,7 @@ async function GetCategories()
   }
   let list = [];
   result.rows.map((tmp, index) => {
-    var cat = { "id": tmp.id, "name": tmp.name };
+    var cat = { "catid": tmp.catid, "category": tmp.category };
     list.push(cat);
   })
   console.log(list);

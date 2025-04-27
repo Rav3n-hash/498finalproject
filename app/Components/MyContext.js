@@ -4,8 +4,9 @@ import { useState, useEffect, createContext } from "react";
 import { useRouter } from "next/navigation";
 import { LoginUser, GetUsers, DeleteUser, UpdateUser, AddUser, GetUser, } from "../Service/UserRoutes";
 import { UpdateItem, DeleteItem } from "../Service/ItemRoutes";
-import { GetItemsByUserId, GetItemsByCategory, GetItems } from "../Service/ItemRoutes";
+import { GetItemsByUserId, GetItemsByCategory, GetItems, AddItem} from "../Service/ItemRoutes";
 import { GetOrders, GetOrdersForSeller, DeleteOrder, AddOrder } from "../Service/OrderRoutes";
+import GetCategories from "../Service/CategoryRoutes";
 export const MyContext = createContext();
 export function Provider({ children }) {
 
@@ -164,10 +165,29 @@ export function Provider({ children }) {
       }
     async function getAllItems(){
         try {
-            const items = await GetItems(); // <- from your existing GetItems()
+            const items = await GetItems();
             return items;
           } catch (err) {
             console.error("Failed to fetch all items:", err);
+            return [];
+          } 
+    }
+
+    async function addNewItem(item) {
+        try {
+            const newItem = await AddItem(item);
+            return newItem;
+        } catch (err) {
+            console.error("Failed to add user:", err);
+        }
+    }
+
+    async function getAllCategories() {
+        try {
+            const items = await GetCategories(); 
+            return items;
+          } catch (err) {
+            console.error("Failed to fetch all categories:", err);
             return [];
           } 
     }
@@ -275,6 +295,7 @@ export function Provider({ children }) {
         userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
         updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
         getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers, addNewUser,
+        addNewItem, getAllCategories,
     };
 
     //*************************RETURN**************************************** */

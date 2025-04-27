@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {MyContext} from '../Components/MyContext';
 import MiniLoginPanel from '../Components/LoginPanel';
+
 
 export default function PostItem() {
   const [formData, setFormData] = useState({
@@ -14,7 +15,17 @@ export default function PostItem() {
     price: '',
   });
 
-  const {isLoggedIn}=useContext(MyContext);
+  const {isLoggedIn, addNewItem, getAllCategories}=useContext(MyContext);
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const catList = await getAllCategories();
+      setCategories(catList);
+    }
+    fetchCategories();
+  }, []);
 
   /************************************************HANDLE ALL INPUT CHANGES**************************************************/
   function handleChange(e) {
@@ -26,7 +37,7 @@ export default function PostItem() {
   }
 
   /********************************************HANDLE SUBMISSION**************************************************/
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (
@@ -41,20 +52,35 @@ export default function PostItem() {
       return;
     }
 
-    // Replace with API call:
-   
-    console.log('Form submitted:', formData);
-    alert('Item posted!');
+    try {
+        const newItem = {
+          userid: sessionStorage.getItem("userid"),
+          title: formData.title,
+          description: formData.description,
+          catid: formData.category,
+          quantityavailable: formData.quantity,
+          image: formData.image,
+          price: formData.price,
+        };
 
-    // Reset form
-    setFormData({
-      title: '',
-      description: '',
-      category: '',
-      quantity: 1,
-      image: '',
-      price: '',
-    });
+      await addNewItem(newItem);
+
+      alert('Item posted!');
+      console.log('Item submitted:', newItem);
+
+      setFormData({
+        title: '',
+        description: '',
+        category: '',
+        quantity: 1,
+        image: '',
+        price: '',
+      });
+
+    } catch (error) {
+      console.error('Error posting item:', error);
+      alert('Failed to post item');
+    }
   }
 
   /************************************************UI DISPLAY***************************************************/
@@ -119,13 +145,9 @@ export default function PostItem() {
                 className="w-full border border-[#7c7f65] rounded px-4 py-2 bg-white focus:outline-none"
             >
                 <option value="" disabled>Select a category</option>
-                <option value="Jewelery">Jewelery</option>
-                <option value="Bath and Body">Bath & Body</option>
-                <option value="Kitchen">Kitchen</option>
-                <option value="Food">Food</option>
-                <option value="Decor">Decor</option>
-                <option value="Clothing">Clothing</option>
-                <option value="Other">Other</option>
+                {categories.map((cat) => (
+                  <option key={cat.catid} value={cat.catid}>{cat.category}</option>
+                ))}
             </select>
         </div>
 
@@ -174,6 +196,7 @@ export default function PostItem() {
         </div>
 
         {/* Image Preview */}
+        {formData.image && (
           <div className="flex flex-col items-center mt-4 ml-20">
             <img
               src={null||formData.image}
@@ -181,6 +204,7 @@ export default function PostItem() {
             />
             <p className="text-[#2e2e2e] mt-2">Image Preview</p>
           </div>
+        )}
 
       </div>
 

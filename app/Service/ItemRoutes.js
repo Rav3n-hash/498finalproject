@@ -149,5 +149,25 @@ async function DeleteItem(id) {
       return [];
     }
   }
+
+
+  async function AddItem(item) {
+    try {
+      const { userid, catid, title, description, quantityavailable, image, price } = item;
   
-  export {GetItems, GetItemsByUserId, UpdateItem, DeleteItem, GetItemsByCategory}
+      const qry = `
+        INSERT INTO items (userid, catid, title, description, quantityavailable, image, price)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *;`;
+  
+      const result = await pool.query(qry, [userid, catid, title, description, quantityavailable, image, price]);
+  
+      console.log("Item added:", result.rows[0]);
+      return result.rows[0];
+    } catch (error) {
+      console.error("Query error:", error);
+      throw error;
+    }
+  }
+  
+  export {GetItems, GetItemsByUserId, UpdateItem, DeleteItem, GetItemsByCategory, AddItem}
