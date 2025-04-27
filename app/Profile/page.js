@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { MyContext } from "../Components/MyContext";
 import EditItemModal from "../Components/EditItemModal";
 import MiniLoginPanel from '../Components/LoginPanel';
+import { useRouter } from "next/navigation";
 
 export default function UserProfile() {
   const {
@@ -19,6 +20,7 @@ export default function UserProfile() {
 
   const [error, setError] = useState("");
   const {isLoggedIn}=useContext(MyContext);
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -60,9 +62,22 @@ export default function UserProfile() {
 
       {/* Items List */}
       <h2 className="text-2xl font-bold mb-4">My Items</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <div className="grid grid-cols-2 gap-4">
-        {userItems.map((item) => (
+      {userItems.length === 0 ? (
+          <>
+            <p className="text-[#7c7f65]">You have not posted any items yet.</p>
+            <button
+              className="text-[#7c7f65] italic underline font-semibold mt-2"
+              onClick={() =>router.push("/PostItem")} 
+            >
+              Click here to post your first item!
+            </button>
+          </>
+        ) : (
+        <>
+          {/* Error message if any */}
+          {error && <p className="text-red-500">{error}</p>}
+          <div className="grid grid-cols-2 gap-4">
+            {userItems.map((item) => (
           <div key={item.id} className="border p-4 rounded shadow">
             <img
               src={item.image || "https://via.placeholder.com/300"}
@@ -95,7 +110,9 @@ export default function UserProfile() {
             </div>
           </div>
         ))}
-      </div>
+          </div>
+        </>
+      )}
 
       {/*popup modal if an item is being edited */}
       <EditItemModal />

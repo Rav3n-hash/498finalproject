@@ -1,7 +1,12 @@
 "use client"
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MyContext } from "../Components/MyContext";
 
 export default function SignUp() {
+
+  const {addNewUser, loginUser}=useContext(MyContext);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -13,6 +18,7 @@ export default function SignUp() {
   });
 
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState("");
 
   const validate = () => {
     const newErrors = {};
@@ -37,12 +43,46 @@ export default function SignUp() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
       console.log("Form submitted:", formData);
+      try {
+        await addNewUser(formData);
+        alert('User created successfully!');
+        await loginUser(formData.email, formData.password, setError);
+
+        // reset form
+        setFormData({
+          firstname: "",
+          lastname: "",
+          email: "",
+          password: "",
+          pic: "",
+          companyname: "",
+          companydesc: "",
+        });
+        setIsSignedUp(true);
+        
+      } catch (err) {
+        console.error('Failed to create user:', err);
+        alert('Something went wrong.');
+      }
     }
   };
+
+
+  if (isSignedUp) {
+    return (
+      <div className="ml-60 mt-20 flex justify-center items-center h-[70vh]">
+      <div className="bg-[#f5f0f2] border border-[#bea8aa] shadow-lg rounded-xl p-10 text-center max-w-xl">
+        <h2 className="text-3xl font-bold mb-6 text-[#2e2e2e]">Sign Up Successful!</h2>
+        <p className="text-lg text-[#2e2e2e]">Welcome to Harvest Lane, {sessionStorage.getItem("fName")}!</p>
+        <p className="text-lg text-[#2e2e2e]">You are now logged in</p>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-center items-center mt-2">

@@ -104,6 +104,14 @@ export function Provider({ children }) {
         }
     }
 
+    async function addNewUser(user) {
+        try {
+            const newUser = await AddUser(user);  // pass user in
+            return newUser;
+        } catch (err) {
+            console.error("Failed to add user:", err);
+        }
+    }
     //*************************ITEM FUNCTIONS******************************************* */
     async function getUserItems(setError) {
         try {
@@ -266,7 +274,7 @@ export function Provider({ children }) {
     const contextValue = {
         userRole, isLoggedIn, fName, lName, email, pic, companyname, userItems, editItem, setEditItem, deleteItem, orderList, getOrders, setOrderList,
         updateLoggedIn, upDateRole, updateLogout, loginUser, getUserItems, updateItemInDB, handleEditItem, getOrders, userOrders, deleteOrder,
-        getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers
+        getAllOrders, getOrdersPendingOrSold, updateCart, clearCart, setCart, removeItem, placeOrder, cart, getItemsByCategory,getAllItems, getAllUsers, addNewUser,
     };
 
     //*************************RETURN**************************************** */

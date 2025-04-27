@@ -67,9 +67,10 @@ async function AddUser(user) {
     var password = user.password;
     var pic = user.pic;
     var companyname = user.companyname
+    var companydesc = user.companydesc;
 
-    var qry = "Insert into users (firstname, lastname, email, password, pic, companyname) VALUES ("
-      + "'" + firstname + "'," + "'" + lastname + "'," + "'" + email + "'," + "'" + password + "'," + "'" + pic + "'," + "'" + companyname + "')";
+    var qry = "Insert into users (firstname, lastname, email, password, pic, companyname, companydesc) VALUES ("
+      + "'" + firstname + "'," + "'" + lastname + "'," + "'" + email + "'," + "'" + password + "'," + "'" + pic + "'," + "'" + companyname + "'," + "'" + companydesc + "')";
 
     console.log(qry);
     const result = await pool.query(qry);
