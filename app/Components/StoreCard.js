@@ -4,7 +4,7 @@ export default function StoreCard({ user }) {
   return (
     <div className="bg-[#f8f8f8] rounded-2xl border border-gray-300 shadow-sm hover:shadow-md overflow-hidden">
       <img
-        src={user.pic}
+        src={user.pic || null}
         alt={user.companyname}
         className="w-full h-40 object-cover"
       />

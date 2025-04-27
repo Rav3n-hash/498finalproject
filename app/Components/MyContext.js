@@ -42,6 +42,7 @@ export function Provider({ children }) {
             setEmail(sessionStorage.getItem("email") || "");
             setPic(sessionStorage.getItem("pic") || "");
             setCompanyName(sessionStorage.getItem("companyname") || "");
+            setUserRole(parseInt(sessionStorage.getItem("role")) || -1);
             const rawCart = sessionStorage.getItem("cart");
             console.log("Raw cart from sessionStorage:", rawCart);
             setCart(JSON.parse(rawCart || "[]"));
@@ -65,6 +66,9 @@ export function Provider({ children }) {
         setEmail("");
         setPic("");
         setCompanyName("");
+        setUserRole(-1);
+        
+
     }
     async function loginUser(email, password, setError) {
         try {
@@ -78,6 +82,7 @@ export function Provider({ children }) {
                 sessionStorage.setItem("pic", user.pic || "");
                 sessionStorage.setItem("companyname", user.companyname || "");
                 sessionStorage.setItem("logged", "1");
+                sessionStorage.setItem("role", user.role);
 
 
                 setIsLoggedIn(true);
@@ -86,6 +91,7 @@ export function Provider({ children }) {
                 setEmail(user.email);
                 setPic(user.pic || "");
                 setCompanyName(user.companyname || "");
+                setUserRole(user.role);
                 //router.push("/");
 
 

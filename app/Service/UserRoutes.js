@@ -20,7 +20,8 @@ async function GetUsers() {
       "email": tmp.email, 
       "pic": tmp.pic, 
       "companyname": tmp.companyname, 
-      "companydesc": tmp.companydesc  
+      "companydesc": tmp.companydesc,
+      "role": tmp.role,
     };
     list.push(user);
   })
@@ -46,7 +47,8 @@ async function UpdateUser(user) {
     var lastname = user.lastname;
     var email = user.email;
     var pic = user.pic;
-    var companyname = user.companyname
+    var companyname = user.companyname;
+    var companyname = user.companydesc;
     var qry = "Update users set firstname='" + firstname + "', lastname='" + lastname + "', email='" + email + "', pic ='" + pic + "' , companyname='" +companyname +"' where userid=" + userid;
 
     console.log(qry);
@@ -66,11 +68,20 @@ async function AddUser(user) {
     var email = user.email;
     var password = user.password;
     var pic = user.pic;
-    var companyname = user.companyname
+    var companyname = user.companyname;
     var companydesc = user.companydesc;
+    var role = user.role;
 
-    var qry = "Insert into users (firstname, lastname, email, password, pic, companyname, companydesc) VALUES ("
-      + "'" + firstname + "'," + "'" + lastname + "'," + "'" + email + "'," + "'" + password + "'," + "'" + pic + "'," + "'" + companyname + "'," + "'" + companydesc + "')";
+    var qry = "INSERT INTO users (firstname, lastname, email, password, pic, companyname, companydesc, role) VALUES ("
+      + "'" + firstname + "', " 
+      + "'" + lastname + "', "
+      + "'" + email + "', "
+      + "'" + password + "', "
+      + "'" + pic + "', "
+      + "'" + companyname + "', "
+      + "'" + companydesc + "', "
+      + "'" + role + "'"
+      + ")";
 
     console.log(qry);
     const result = await pool.query(qry);

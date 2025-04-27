@@ -1,21 +1,26 @@
-"use client";
+'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faBagShopping, faUser, faPlusCircle, faSoap, faUtensils, faGem, faAppleAlt, faCouch, faShirt, faThList, faCartShopping, faFileInvoice, faIdCard, faLock, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import { useState, useContext} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faBagShopping, faUser, faPlusCircle, faFileInvoice, faIdCard, faLock, faArrowRightFromBracket, faThList } from '@fortawesome/free-solid-svg-icons';
+import { useState, useContext } from 'react';
 import Link from "next/link";
 import MiniLoginPanel from './LoginPanel';
 import { MyContext } from './MyContext';
 
 export default function LeftNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const {isLoggedIn} = useContext(MyContext);
-  console.log("The user is logged in: ", isLoggedIn)
+  const { isLoggedIn, userRole } = useContext(MyContext);  // Assuming userRole is part of MyContext
 
   const profileOptions = [
     { name: "View Profile", icon: faIdCard, path: "/Profile" },
     { name: "View Orders", icon: faFileInvoice, path: "/Profile/Orders" },
-    { name: "View Cart", icon: faCartShopping, path: "/Profile/Cart" },
+    { name: "View Cart", icon: faLock, path: "/Profile/Cart" },  // Only for users, not admins
+  ];
+
+  const adminOptions = [
+    { name: "View All Users", icon: faUser, path: "/Admin/Users" },
+    { name: "View All Orders", icon: faFileInvoice, path: "/Admin/Orders" },
+    { name: "See All Items", icon: faThList, path: "/Items" },
   ];
 
   const toggleProfileOptions = () => {
@@ -52,16 +57,27 @@ export default function LeftNavbar() {
             </button>
             {showProfileMenu && (
               <div className="ml-10 text-black/40">
-                {profileOptions.map((option, index) => (
-                  <div
-                    key={index}
-                    className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer"
-                    onClick={option.action || null}
-                  >
-                    <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
-                    {option.path ? <Link href={option.path}>{option.name}</Link> : option.name}
-                  </div>
-                ))}
+                {userRole === 1 ? (  // Admin role
+                  adminOptions.map((option, index) => (
+                    <div
+                      key={index}
+                      className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer"
+                    >
+                      <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
+                      <Link href={option.path}>{option.name}</Link>
+                    </div>
+                  ))
+                ) : (  // Regular user role
+                  profileOptions.map((option, index) => (
+                    <div
+                      key={index}
+                      className="text-md p-2 hover:bg-[#cad9bc] rounded hover:text-black/35 transition duration-300 cursor-pointer"
+                    >
+                      <FontAwesomeIcon icon={option.icon} className="text-sm mr-2" />
+                      <Link href={option.path}>{option.name}</Link>
+                    </div>
+                  ))
+                )}
               </div>
             )}
           </>
@@ -74,7 +90,8 @@ export default function LeftNavbar() {
 
         <div className="ml-4 text-lg p-3 hover:bg-[#cad9bc] hover:text-black/35 hover:transition-discrete duration-400">
           <Link href="/PostItem">
-            <FontAwesomeIcon icon={faPlusCircle} className='mr-2' /> Post Item
+            <FontAwesomeIcon icon={faPlusCircle} className='mr-2' />
+            {userRole === 1 ? "See All Items" : "Post Item"}
           </Link>
         </div>
 
