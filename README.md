@@ -80,7 +80,7 @@ User Experience
   - If a user tries to access protected pages (e.g., Cart, Orders, Profile) without being logged in, they will be prompted to Log In or Sign Up with convenient   
     buttons.
 
-#Simple App Rules 
+## Getting Started with the Application
 
 Note: You must have a valid account to interact fully with the platform.
 
