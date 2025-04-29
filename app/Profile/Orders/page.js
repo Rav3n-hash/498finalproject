@@ -61,47 +61,53 @@ export default function ViewOrders() {
                 <span className="text-sm text-[#a8b2a1]">{new Date(order.orderdate).toLocaleDateString()}</span>
               </div>
 
-              {/* Item 1 */}
-              <div className="flex items-start gap-4 mb-4">
-                <img
-                  src={order.item1_image || "https://via.placeholder.com/40"}
-                  alt="Item 1"
-                  className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
-                />
-                <div>
-                  <p className="text-sm mb-1"><strong>Item:</strong> {order.item1_title}</p>
-                  <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item1_stock}</p>
-                  <p className="text-sm mb-1"><strong>Description:</strong> {order.item1_description}</p>
+               {/* Item 1 */}
+               {order.item1 && (
+                <div className="flex items-start gap-4 mb-4">
+                  <img
+                    src={order.item1_image || "https://via.placeholder.com/40"}
+                    alt="Item 1"
+                    className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
+                  />
+                  <div>
+                    <p className="text-sm mb-1"><strong>Item:</strong> {order.item1_title}</p>
+                    <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item1_stock}</p>
+                    <p className="text-sm mb-1"><strong>Description:</strong> {order.item1_description}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Item 2 */}
-              <div className="flex items-start gap-4 mb-4">
-                <img
-                  src={order.item2_image || "https://via.placeholder.com/40"}
-                  alt="Item 2"
-                  className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
-                />
-                <div>
-                  <p className="text-sm mb-1"><strong>Item:</strong> {order.item2_title}</p>
-                  <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item2_stock}</p>
-                  <p className="text-sm mb-1"><strong>Description:</strong> {order.item2_description}</p>
+              {order.item2 && (
+                <div className="flex items-start gap-4 mb-4">
+                  <img
+                    src={order.item2_image || "https://via.placeholder.com/40"}
+                    alt="Item 2"
+                    className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
+                  />
+                  <div>
+                    <p className="text-sm mb-1"><strong>Item:</strong> {order.item2_title}</p>
+                    <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item2_stock}</p>
+                    <p className="text-sm mb-1"><strong>Description:</strong> {order.item2_description}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Item 3 */}
-              <div className="flex items-start gap-4 mb-4">
-                <img
-                  src={order.item3_image || "https://via.placeholder.com/40"}
-                  alt="Item 3"
-                  className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
-                />
-                <div>
-                  <p className="text-sm mb-1"><strong>Item:</strong> {order.item3_title}</p>
-                  <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item3_stock}</p>
-                  <p className="text-sm mb-1"><strong>Description:</strong> {order.item3_description}</p>
+              {order.item3 && (
+                <div className="flex items-start gap-4 mb-4">
+                  <img
+                    src={order.item3_image || "https://via.placeholder.com/40"}
+                    alt="Item 3"
+                    className="w-12 h-12 object-cover rounded-full border border-[#a8b2a1]"
+                  />
+                  <div>
+                    <p className="text-sm mb-1"><strong>Item:</strong> {order.item3_title}</p>
+                    <p className="text-sm mb-1"><strong>Quantity:</strong> {order.item3_stock}</p>
+                    <p className="text-sm mb-1"><strong>Description:</strong> {order.item3_description}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <p className="text-sm mb-4"><strong><b>Total:  ${parseFloat(order.price).toFixed(2)}</b></strong></p>
 
