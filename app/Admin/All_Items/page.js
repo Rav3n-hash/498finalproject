@@ -60,35 +60,15 @@ export default function AllItems() {
       {items.length === 0 ? (
         <p className="text-center text-[#a8b2a1]">Loading Items...</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-6">
           {items.map((item) => (
             <div key={item.id} className="relative">
               <ItemCard item={item} handleDelete={handleDelete}/>
               <div className="absolute top-2 right-2 flex gap-2">
-                <button
-                  className="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded text-sm"
-                  onClick={() => handleEdit(item)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-500 hover:bg-red-400 text-white px-2 py-1 rounded text-sm"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
               </div>
             </div>
           ))}
         </div>
-      )}
-
-      {isEditModalOpen && (
-        <EditItemModal
-          item={selectedItem}
-          onSave={handleEditSave}
-          onClose={() => setIsEditModalOpen(false)}
-        />
       )}
     </div>
   );
