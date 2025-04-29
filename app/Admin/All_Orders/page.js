@@ -49,7 +49,7 @@ export default function AllOrders() {
       <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">All Orders In System</h1>
 
       {sortedOrders.length === 0 ? (
-        <p className="text-center text-[#a8b2a1]">No orders found.</p>
+        <p className="text-center text-[#a8b2a1]">Loading Orders...</p>
       ) : (
         <div className="space-y-6">
           {sortedOrders.map((order) => (

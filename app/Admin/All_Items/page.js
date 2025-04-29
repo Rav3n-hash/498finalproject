@@ -58,7 +58,7 @@ export default function AllItems() {
       <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">All Items</h1>
 
       {items.length === 0 ? (
-        <p className="text-center text-[#a8b2a1]">No items found.</p>
+        <p className="text-center text-[#a8b2a1]">Loading Items...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (

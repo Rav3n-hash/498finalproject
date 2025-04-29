@@ -45,7 +45,7 @@ export default function AllUsers() {
       <h1 className="text-3xl font-bold text-[#bea8aa] mb-6 text-center">All Users</h1>
 
       {users.length === 0 ? (
-        <p className="text-center text-[#a8b2a1]">No users found.</p>
+        <p className="text-center text-[#a8b2a1]">Loading Users...</p>
       ) : (
         <div className="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {users.map((user) => (
