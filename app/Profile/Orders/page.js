@@ -61,8 +61,8 @@ export default function ViewOrders() {
                 <span className="text-sm text-[#a8b2a1]">{new Date(order.orderdate).toLocaleDateString()}</span>
               </div>
 
-               {/* Item 1 */}
-               {order.item1 && (
+                {/* Item 1 */}
+                {order.item1_title && (
                 <div className="flex items-start gap-4 mb-4">
                   <img
                     src={order.item1_image || "https://via.placeholder.com/40"}
@@ -78,7 +78,7 @@ export default function ViewOrders() {
               )}
 
               {/* Item 2 */}
-              {order.item2 && (
+              {order.item2_title && (
                 <div className="flex items-start gap-4 mb-4">
                   <img
                     src={order.item2_image || "https://via.placeholder.com/40"}
@@ -94,7 +94,7 @@ export default function ViewOrders() {
               )}
 
               {/* Item 3 */}
-              {order.item3 && (
+              {order.item3_title && (
                 <div className="flex items-start gap-4 mb-4">
                   <img
                     src={order.item3_image || "https://via.placeholder.com/40"}
